@@ -8,6 +8,7 @@ import (
 // in percent of one core, and its resident memory in bytes.
 type ProcessStat struct {
 	PID        int32
+	PPID       int32
 	Name       string
 	CPUPercent float64
 	RSS        uint64
@@ -56,8 +57,10 @@ func (p *Processes) Sample() ([]ProcessStat, error) {
 			continue
 		}
 		name, _ := handle.Name()
+		ppid, _ := handle.Ppid()
 		stats = append(stats, ProcessStat{
 			PID:        proc.Pid,
+			PPID:       ppid,
 			Name:       name,
 			CPUPercent: cpuPercent,
 			RSS:        mem.RSS,
